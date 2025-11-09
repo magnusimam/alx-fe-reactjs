@@ -1,11 +1,11 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
-function App() {
+function Home() {
   const [count, setCount] = useState(0)
-
   return (
     <>
       <div>
@@ -29,6 +29,26 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
+  )
+}
+
+function About() {
+  return (
+    <div>
+      <h1>About Us</h1>
+      <p>Welcome to our company! We are passionate about creating amazing products.</p>
+    </div>
+  )
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </Router>
   )
 }
 
