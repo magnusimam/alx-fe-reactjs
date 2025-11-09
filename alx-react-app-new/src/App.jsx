@@ -1,4 +1,18 @@
 import './App.css'
+import Counter from './components/Counter'
+
+function App() {
+  return (
+    <>
+      <h1>Counter Application</h1>
+      <Counter />
+    </>
+  )
+}
+
+export default App
+
+import './App.css'
 import Header from './components/Header'
 import MainContent from './components/MainContent'
 import Footer from './components/Footer'
