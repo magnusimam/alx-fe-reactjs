@@ -3,51 +3,65 @@
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  min-height: 100vh;
 }
 
 h1 {
   text-align: center;
   color: #333;
   margin-bottom: 30px;
+  font-size: 2.5em;
 }
 
 h2 {
   color: #444;
   margin-top: 20px;
+  margin-bottom: 15px;
+  font-size: 1.8em;
 }
 
 form {
-  background: #f5f5f5;
+  background: #fff;
   padding: 20px;
   border-radius: 8px;
   margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 input, textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin-bottom: 10px;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
   box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #4CAF50;
 }
 
 textarea {
   min-height: 100px;
   resize: vertical;
+  font-family: Arial, sans-serif;
 }
 
 button {
   background: #4CAF50;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
   margin-right: 10px;
   margin-top: 10px;
+  transition: background 0.3s;
 }
 
 button:hover {
@@ -62,21 +76,56 @@ button[type="button"]:hover {
   background: #777;
 }
 
+button[style*="backgroundColor: 'red'"] {
+  background: #f44336 !important;
+}
+
+button[style*="backgroundColor: 'red'"]:hover {
+  background: #da190b !important;
+}
+
 div[style*="cursor: pointer"] {
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 div[style*="cursor: pointer"]:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 h3 {
   margin-top: 0;
   color: #2c3e50;
+  font-size: 1.4em;
 }
 
 p {
   color: #666;
   line-height: 1.6;
+  margin: 10px 0;
+}
+
+/* Search bar specific styles */
+input[placeholder="Search recipes..."] {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+input[placeholder="Search recipes..."]:focus {
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .App {
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 2em;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+  }
 }
