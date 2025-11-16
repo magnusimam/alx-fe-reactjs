@@ -1,9 +1,8 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useRecipeStore from './recipeStore';
 
 const RecipeList = () => {
-  const navigate = useNavigate();
   const recipes = useRecipeStore((state) => state.recipes);
   const filteredRecipes = useRecipeStore((state) => state.filteredRecipes);
   const searchTerm = useRecipeStore((state) => state.searchTerm);
@@ -29,22 +28,26 @@ const RecipeList = () => {
       ) : (
         <div>
           {displayRecipes.map((recipe) => (
-            <div 
+            <Link 
               key={recipe.id} 
-              onClick={() => navigate(`/recipe/${recipe.id}`)}
-              style={{ 
-                cursor: 'pointer', 
-                border: '1px solid #ddd', 
-                padding: '15px', 
-                margin: '10px 0',
-                borderRadius: '8px',
-                backgroundColor: '#fff',
-                transition: 'all 0.2s'
-              }}
+              to={`/recipe/${recipe.id}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
             >
-              <h3>{recipe.title}</h3>
-              <p>{recipe.description}</p>
-            </div>
+              <div 
+                style={{ 
+                  cursor: 'pointer', 
+                  border: '1px solid #ddd', 
+                  padding: '15px', 
+                  margin: '10px 0',
+                  borderRadius: '8px',
+                  backgroundColor: '#fff',
+                  transition: 'all 0.2s'
+                }}
+              >
+                <h3>{recipe.title}</h3>
+                <p>{recipe.description}</p>
+              </div>
+            </Link>
           ))}
         </div>
       )}
