@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "zustand": "^5.0.8"
+    "zustand": "^4.4.1"
   }
 }
 
@@ -31,4 +31,11 @@
     "globals": "^15.11.0",
     "vite": "^5.4.10"
   }
-}
+
+   },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^18.3.1",
+    "zustand": "^4.4.1"
+  },
