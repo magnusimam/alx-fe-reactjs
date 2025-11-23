@@ -36,51 +36,42 @@ const githubService = {
    * @param {number} searchParams.perPage - Results per page (default: 10)
    * @returns {Promise} - Search results with users array and total count
    */
-  searchUsers: async ({ username = '', location = '', minRepos = 0, page = 1, perPage = 10 }) => {
+  searchUsers: async ({ username = '', location = '', minRepos = 0, page = 1, perPage = 10 } = {}) => {
     try {
-      // Build query string based on provided parameters
-      let query = '';
-      
-      // Add username to query if provided
-      if (username.trim()) {
-        query += username.trim();
+      const queryParts = [];
+
+      if (username && username.trim()) {
+        queryParts.push(username.trim());
       }
-      
-      // Add location filter if provided
-      if (location.trim()) {
-        query += ` location:${location.trim()}`;
+
+      if (location && location.trim()) {
+        const loc = location.trim().includes(' ') ? `"${location.trim()}"` : location.trim();
+        queryParts.push(`location:${loc}`);
       }
-      
-      // Add minimum repositories filter if provided
-      if (minRepos > 0) {
-        query += ` repos:>=${minRepos}`;
+
+      if (Number.isFinite(minRepos) && minRepos > 0) {
+        queryParts.push(`repos:>=${minRepos}`);
       }
-      
-      // If query is empty, search for all users (limited results)
-      if (!query.trim()) {
-        query = 'type:user';
+
+      if (queryParts.length === 0) {
+        queryParts.push('type:user');
       }
-      
-      // Make API request with query parameters
-      const response = await axios.get(`${BASE_URL}/search/users`, {
-        params: {
-          q: query,
-          page: page,
-          per_page: perPage
-        },
-        headers: {
-          'Accept': 'application/vnd.github.v3+json',
-        }
+
+      const q = encodeURIComponent(queryParts.join(' '));
+      const url = `${BASE_URL}/search/users?q=${q}&page=${page}&per_page=${perPage}`;
+
+      const response = await axios.get(url, {
+        headers: { Accept: 'application/vnd.github.v3+json' }
       });
-      
+
       return {
         users: response.data.items,
         totalCount: response.data.total_count,
-        page: page,
-        perPage: perPage
+        page,
+        perPage
       };
     } catch (error) {
-      console.error('Error searching users:', error);
+      console.error('githubService.searchUsers error:', error?.response?.data || error.message || error);
       throw new Error('Failed to search users');
     }
   },
