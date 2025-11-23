@@ -41,10 +41,12 @@ const githubService = {
       const queryParts = [];
 
       if (username && username.trim()) {
+        // allow searching by login or name fragments
         queryParts.push(username.trim());
       }
 
       if (location && location.trim()) {
+        // Quote multi-word locations
         const loc = location.trim().includes(' ') ? `"${location.trim()}"` : location.trim();
         queryParts.push(`location:${loc}`);
       }
