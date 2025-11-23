@@ -3,7 +3,7 @@ import Search from './components/Search';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8">
       <div className="container mx-auto px-4">
         
         {/* Header */}
@@ -20,7 +20,7 @@ function App() {
             </svg>
             <h1 className="text-4xl font-bold text-gray-900">GitHub User Search</h1>
           </div>
-          <p className="text-gray-600 text-lg">Find and explore GitHub user profiles</p>
+          <p className="text-gray-600 text-lg">Advanced search with location and repository filters</p>
         </header>
 
         {/* Search Component */}
@@ -28,7 +28,7 @@ function App() {
 
         {/* Footer */}
         <footer className="text-center mt-12 text-gray-500 text-sm">
-          <p>Powered by GitHub API</p>
+          <p>Powered by GitHub API • Built with React & Tailwind CSS</p>
         </footer>
       </div>
     </div>
