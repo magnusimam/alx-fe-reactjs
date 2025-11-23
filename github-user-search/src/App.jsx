@@ -1,64 +1,13 @@
-import React, { useState } from 'react';
-import SearchBar from './components/SearchBar';
-import UserCard from './components/UserCard';
-import UserDetails from './components/UserDetails';
-import githubService from './services/githubService';
+import React from 'react';
+import Search from './components/Search';
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [detailsLoading, setDetailsLoading] = useState(false);
-
-  // Handle user search
-  const handleSearch = async (searchTerm) => {
-    setLoading(true);
-    setError(null);
-    setUsers([]);
-    
-    try {
-      const results = await githubService.searchUsers(searchTerm);
-      setUsers(results);
-      
-      if (results.length === 0) {
-        setError('No users found. Try a different search term.');
-      }
-    } catch (err) {
-      setError('Failed to search users. Please try again.');
-      console.error('Search error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Handle viewing user details
-  const handleViewDetails = async (username) => {
-    setDetailsLoading(true);
-    setError(null);
-    
-    try {
-      const userDetails = await githubService.getUserDetails(username);
-      setSelectedUser(userDetails);
-    } catch (err) {
-      setError('Failed to load user details. Please try again.');
-      console.error('Details error:', err);
-    } finally {
-      setDetailsLoading(false);
-    }
-  };
-
-  // Handle closing details modal
-  const handleCloseDetails = () => {
-    setSelectedUser(null);
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+      <div className="container mx-auto px-4">
         
         {/* Header */}
-        <header className="text-center mb-12">
+        <header className="text-center mb-8">
           <div className="flex items-center justify-center mb-4">
             <svg 
               className="text-blue-600 mr-3" 
@@ -67,75 +16,20 @@ function App() {
               fill="currentColor" 
               viewBox="0 0 24 24"
             >
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
             </svg>
             <h1 className="text-4xl font-bold text-gray-900">GitHub User Search</h1>
           </div>
-          <p className="text-gray-600 text-lg">Discover and explore GitHub profiles</p>
+          <p className="text-gray-600 text-lg">Find and explore GitHub user profiles</p>
         </header>
 
-        {/* Search Bar */}
-        <SearchBar onSearch={handleSearch} loading={loading} />
+        {/* Search Component */}
+        <Search />
 
-        {/* Error Message */}
-        {error && (
-          <div className="max-w-2xl mx-auto mb-8 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
-            {error}
-          </div>
-        )}
-
-        {/* Loading State */}
-        {loading && (
-          <div className="text-center py-12">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            <p className="mt-4 text-gray-600">Searching users...</p>
-          </div>
-        )}
-
-        {/* User Results */}
-        {!loading && users.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {users.map((user) => (
-              <UserCard
-                key={user.id}
-                user={user}
-                onViewDetails={handleViewDetails}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {!loading && !error && users.length === 0 && (
-          <div className="text-center py-12">
-            <svg 
-              className="mx-auto text-gray-400 mb-4" 
-              width="64" 
-              height="64" 
-              fill="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>
-            <p className="text-gray-500 text-lg">Start searching for GitHub users</p>
-            <p className="text-gray-400 text-sm mt-2">Try searching for "octocat" or "torvalds"</p>
-          </div>
-        )}
-
-        {/* User Details Modal */}
-        {selectedUser && (
-          <UserDetails user={selectedUser} onClose={handleCloseDetails} />
-        )}
-
-        {/* Details Loading Overlay */}
-        {detailsLoading && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-8 text-center">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-              <p className="mt-4 text-gray-600">Loading details...</p>
-            </div>
-          </div>
-        )}
+        {/* Footer */}
+        <footer className="text-center mt-12 text-gray-500 text-sm">
+          <p>Powered by GitHub API</p>
+        </footer>
       </div>
     </div>
   );
