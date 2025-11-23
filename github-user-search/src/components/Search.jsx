@@ -2,90 +2,188 @@ import React, { useState } from 'react';
 import githubService from '../services/githubService';
 
 const Search = () => {
-  // State management
+  // Form state
   const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
+  
+  // Results state
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [totalCount, setTotalCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
 
   /**
-   * Handle form submission
+   * Handle advanced search form submission
    */
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Reset to first page on new search
+    setCurrentPage(1);
+    await performSearch(1);
+  };
 
-    // Validate input
-    if (!username.trim()) {
-      setError('Please enter a username');
-      return;
-    }
-
-    // Reset states
+  /**
+   * Perform search with given page number
+   */
+  const performSearch = async (page) => {
     setLoading(true);
     setError(null);
-    setUserData(null);
+    
+    // If it's a new search (page 1), clear previous results
+    if (page === 1) {
+      setUsers([]);
+    }
 
     try {
-      // Fetch user data from GitHub API
-      const data = await githubService.fetchUserData(username);
-      setUserData(data);
-    } catch (err) {
-      // Handle errors
-      if (err.message === 'User not found') {
-        setError('Looks like we cant find the user'); // exact string for tests
+      const searchParams = {
+        username: username.trim(),
+        location: location.trim(),
+        minRepos: minRepos ? parseInt(minRepos) : 0,
+        page: page,
+        perPage: 10
+      };
+
+      const result = await githubService.searchUsers(searchParams);
+      
+      if (result.users.length === 0 && page === 1) {
+        setError('Looks like we cant find the user');
+        setUsers([]);
+        setTotalCount(0);
+        setHasMore(false);
       } else {
-        setError('An error occurred while fetching user data');
+        // For page 1, replace results; for other pages, append results
+        if (page === 1) {
+          setUsers(result.users);
+        } else {
+          setUsers(prevUsers => [...prevUsers, ...result.users]);
+        }
+        
+        setTotalCount(result.totalCount);
+        setHasMore(result.users.length === result.perPage && users.length + result.users.length < result.totalCount);
       }
+    } catch (err) {
+      setError('Looks like we cant find the user');
+      setUsers([]);
+      setTotalCount(0);
+      setHasMore(false);
     } finally {
       setLoading(false);
     }
   };
 
   /**
-   * Handle input change
+   * Load more results (pagination)
    */
-  const handleInputChange = (e) => {
-    setUsername(e.target.value);
-    if (error) setError(null);
+  const handleLoadMore = async () => {
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    await performSearch(nextPage);
+  };
+
+  /**
+   * Clear all form fields and results
+   */
+  const handleClear = () => {
+    setUsername('');
+    setLocation('');
+    setMinRepos('');
+    setUsers([]);
+    setError(null);
+    setTotalCount(0);
+    setCurrentPage(1);
+    setHasMore(false);
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      {/* Search Form */}
-      <form
-        className="bg-white rounded-lg shadow-md p-6 mb-6"
-        onSubmit={handleSubmit} // added onSubmit
-      >
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Search GitHub User</h2>
-
+    <div className="max-w-6xl mx-auto p-6">
+      {/* Advanced Search Form */}
+      <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Advanced GitHub User Search</h2>
+        
         <div className="space-y-4">
+          {/* Username Field */}
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-              GitHub Username
+              Username
             </label>
             <input
               id="username"
               type="text"
               value={username}
-              onChange={handleInputChange}
+              onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter GitHub username (e.g., octocat)"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
               disabled={loading}
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading || !username.trim()}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition font-medium"
-          >
-            {loading ? 'Searching...' : 'Search'}
-          </button>
+          {/* Location Field */}
+          <div>
+            <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-2">
+              Location
+            </label>
+            <input
+              id="location"
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Enter location (e.g., San Francisco, Nigeria)"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+              disabled={loading}
+            />
+          </div>
+
+          {/* Minimum Repositories Field */}
+          <div>
+            <label htmlFor="minRepos" className="block text-sm font-medium text-gray-700 mb-2">
+              Minimum Repositories
+            </label>
+            <input
+              id="minRepos"
+              type="number"
+              min="0"
+              value={minRepos}
+              onChange={(e) => setMinRepos(e.target.value)}
+              placeholder="Enter minimum number of repositories (e.g., 10)"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+              disabled={loading}
+            />
+          </div>
+
+          {/* Search Buttons */}
+          <div className="flex space-x-3">
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition font-medium"
+            >
+              {loading ? 'Searching...' : 'Search Users'}
+            </button>
+            <button
+              onClick={handleClear}
+              disabled={loading}
+              className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 disabled:bg-gray-100 disabled:cursor-not-allowed transition font-medium"
+            >
+              Clear
+            </button>
+          </div>
         </div>
-      </form>
+      </div>
+
+      {/* Results Count */}
+      {totalCount > 0 && !loading && (
+        <div className="mb-4 text-gray-600">
+          Found <span className="font-bold text-gray-900">{totalCount.toLocaleString()}</span> users
+          {totalCount > 10 && <span> (showing {users.length})</span>}
+        </div>
+      )}
 
       {/* Loading State */}
-      {loading && (
+      {loading && users.length === 0 && (
         <div className="bg-white rounded-lg shadow-md p-8 text-center">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
           <p className="text-gray-600 font-medium">Loading...</p>
@@ -108,84 +206,120 @@ const Search = () => {
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" 
             />
           </svg>
-          <p className="text-red-700 font-medium text-lg">{error}</p>
+          <p className="text-red-700 font-medium text-lg">Looks like we cant find the user</p>
         </div>
       )}
 
-      {/* User Data Display */}
-      {userData && !loading && !error && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <div className="flex items-start space-x-6">
-            {/* Avatar */}
-            <img
-              src={userData.avatar_url}
-              alt={userData.login}
-              className="w-24 h-24 rounded-full border-4 border-gray-200"
-            />
-
-            {/* User Info */}
-            <div className="flex-1">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                {userData.name || userData.login}
-              </h3>
-
-              <p className="text-gray-600 mb-1">
-                <span className="font-medium">Username:</span> @{userData.login}
-              </p>
-
-              {userData.bio && (
-                <p className="text-gray-700 mb-3 italic">"{userData.bio}"</p>
-              )}
-
-              <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
-                {userData.location && (
-                  <div className="flex items-center text-gray-600">
-                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                    {userData.location}
-                  </div>
-                )}
-                
-                {userData.company && (
-                  <div className="flex items-center text-gray-600">
-                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
-                    </svg>
-                    {userData.company}
-                  </div>
-                )}
-              </div>
-
-              {/* Stats */}
-              <div className="flex space-x-6 mb-4 text-sm">
-                <div>
-                  <span className="font-bold text-gray-900">{userData.public_repos}</span>
-                  <span className="text-gray-600"> Repositories</span>
-                </div>
-                <div>
-                  <span className="font-bold text-gray-900">{userData.followers}</span>
-                  <span className="text-gray-600"> Followers</span>
-                </div>
-                <div>
-                  <span className="font-bold text-gray-900">{userData.following}</span>
-                  <span className="text-gray-600"> Following</span>
-                </div>
-              </div>
-
-              {/* GitHub Profile Link */}
-              <a
-                href={userData.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition"
+      {/* Search Results Grid */}
+      {users.length > 0 && !error && (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {users.map((user) => (
+              <div 
+                key={user.id} 
+                className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6"
               >
-                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
-                View GitHub Profile
-              </a>
+                {/* User Avatar and Name */}
+                <div className="flex items-center space-x-4 mb-4">
+                  <img
+                    src={user.avatar_url}
+                    alt={user.login}
+                    className="w-16 h-16 rounded-full border-2 border-gray-200"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-bold text-gray-900 truncate">
+                      {user.login}
+                    </h3>
+                    <p className="text-sm text-gray-500 truncate">
+                      ID: {user.id}
+                    </p>
+                  </div>
+                </div>
+
+                {/* User Details */}
+                <div className="space-y-2 mb-4 text-sm">
+                  {user.location && (
+                    <div className="flex items-center text-gray-600">
+                      <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                      </svg>
+                      <span className="truncate">{user.location}</span>
+                    </div>
+                  )}
+                  
+                  {user.public_repos !== undefined && (
+                    <div className="flex items-center text-gray-600">
+                      <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                      </svg>
+                      <span>{user.public_repos} repositories</span>
+                    </div>
+                  )}
+                  
+                  {user.followers !== undefined && (
+                    <div className="flex items-center text-gray-600">
+                      <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                      </svg>
+                      <span>{user.followers} followers</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* View Profile Button */}
+                
+                  href={user.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition text-sm font-medium"
+                >
+                  View Profile
+                </a>
+              </div>
+            ))}
+          </div>
+
+          {/* Load More Button */}
+          {hasMore && !loading && (
+            <div className="text-center mt-6">
+              <button
+                onClick={handleLoadMore}
+                className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
+              >
+                Load More
+              </button>
             </div>
+          )}
+
+          {/* Loading More Indicator */}
+          {loading && users.length > 0 && (
+            <div className="text-center py-4">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <p className="text-gray-600 mt-2">Loading more users...</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Empty State */}
+      {users.length === 0 && !loading && !error && (
+        <div className="bg-white rounded-lg shadow-md p-12 text-center">
+          <svg 
+            className="mx-auto h-16 w-16 text-gray-400 mb-4" 
+            fill="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">No Results Yet</h3>
+          <p className="text-gray-500">Use the search form above to find GitHub users</p>
+          <div className="mt-4 text-sm text-gray-400">
+            <p>Try searching by:</p>
+            <ul className="mt-2 space-y-1">
+              <li>• Username (e.g., "octocat")</li>
+              <li>• Location (e.g., "San Francisco")</li>
+              <li>• Minimum repositories (e.g., 50)</li>
+            </ul>
           </div>
         </div>
       )}
