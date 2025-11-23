@@ -6,6 +6,7 @@ const BASE_URL = 'https://api.github.com';
 const githubService = {
   /**
    * Fetch a single user's data by username
+   * This is the main function required for the search feature
    * @param {string} username - GitHub username to search for
    * @returns {Promise} - User data from GitHub API
    */
