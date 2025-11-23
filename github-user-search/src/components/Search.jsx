@@ -110,4 +110,50 @@ const Search = () => {
   );
 };
 
+const performSearch = async (page = 1) => {
+  try {
+    if (page === 1) {
+      setLoading(true);
+      setUsers([]);
+      setError(null);
+    } else {
+      setLoadingMore(true);
+    }
+
+    // Build GitHub search query
+    let query = "";
+
+    if (username.trim()) query += `${username.trim()}+in:login`;
+    if (location.trim()) query += `+location:${location.trim()}`;
+    if (minRepos) query += `+repos:>=${minRepos}`;
+
+    const finalQuery = query || "type:user"; // fallback to all users
+
+    // Call GitHub API through githubService
+    const result = await githubService.searchUsers(finalQuery, page, PER_PAGE);
+
+    // Save results
+    if (page === 1) {
+      setUsers(result.users);
+    } else {
+      setUsers(prev => [...prev, ...result.users]);
+    }
+
+    setTotalCount(result.totalCount);
+    setHasMore(
+      result.users.length === PER_PAGE &&
+      page * PER_PAGE < result.totalCount
+    );
+
+    setCurrentPage(page);
+
+  } catch (err) {
+    setError(err.message || 'Failed to search users');
+  } finally {
+    setLoading(false);
+    setLoadingMore(false);
+  }
+};
+
+
 export default Search;
