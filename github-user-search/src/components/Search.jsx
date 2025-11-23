@@ -24,7 +24,8 @@ const Search = () => {
         location,
         minRepos: Number(minRepos) || 0,
         page: p,
-        perPage
+        perPage,
+        includeDetails: true // request full user details (location, public_repos, etc.)
       });
 
       setResults(reset ? res.users : [...results, ...res.users]);
@@ -37,19 +38,27 @@ const Search = () => {
     }
   };
 
-  const loadMore = () => {
+  const loadMore = async () => {
     if (results.length >= totalCount) return;
-    const next = page + 1;
-    setPage(next);
-    githubService.searchUsers({
-      username,
-      location,
-      minRepos: Number(minRepos) || 0,
-      page: next,
-      perPage
-    })
-      .then(res => setResults(prev => [...prev, ...res.users]))
-      .catch(err => setError(err.message || 'Load more failed'));
+    setLoading(true);
+    setError('');
+    try {
+      const next = page + 1;
+      const res = await githubService.searchUsers({
+        username,
+        location,
+        minRepos: Number(minRepos) || 0,
+        page: next,
+        perPage,
+        includeDetails: true
+      });
+      setResults(prev => [...prev, ...res.users]);
+      setPage(next);
+    } catch (err) {
+      setError(err.message || 'Load more failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -87,7 +96,7 @@ const Search = () => {
       {error && <div className="mt-4 text-red-600" role="alert">{error}</div>}
 
       <div className="mt-4 space-y-3">
-        {results.map(user => <UserCard key={user.id} user={user} />)}
+        {results.map(user => <UserCard key={user.id || user.login} user={user} />)}
       </div>
 
       {results.length > 0 && results.length < totalCount && (
