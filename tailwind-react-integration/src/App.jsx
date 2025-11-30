@@ -1,12 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import UserProfile from './components/UserProfile';
 
-export default function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-500 to-purple-600">
-      <h1 className="text-4xl font-bold text-white">Tailwind CSS is working!</h1>
-    </div>
-  )
+function App() {
+  const sampleUser = {
+    name: 'Octocat',
+    bio: 'There once was...',
+    location: 'San Francisco',
+    email: 'octocat@github.com',
+    avatar: 'https://avatars.githubusercontent.com/u/1?v=4',
+    followers: 3938,
+    following: 9,
+    publicRepos: 2,
+    profileUrl: 'https://github.com/octocat'
+  };
+
+  return <UserProfile user={sampleUser} />;
 }
+
+export default App;
