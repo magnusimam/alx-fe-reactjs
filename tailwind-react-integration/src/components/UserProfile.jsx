@@ -23,7 +23,7 @@ const UserProfile = ({ user = {} }) => {
           <img
             src={avatar}
             alt={name}
-            className="w-24 h-24 sm:w-28 sm:h-28 md:w-36 md:h-36 rounded-full border-4 border-indigo-200 object-cover"
+            className="w-24 h-24 sm:w-24 sm:h-24 md:w-36 md:h-36 rounded-full border-4 border-indigo-200 object-cover"
             loading="lazy"
           />
         </div>
