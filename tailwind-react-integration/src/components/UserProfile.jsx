@@ -16,7 +16,7 @@ const UserProfile = ({ user = {} }) => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 sm:p-6 md:p-8">
       {/* Container with responsive max-width and padding */}
-      <div className="w-full max-w-xs sm:max-w-sm md:max-w-md bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
+      <div className="w-full max-w-xs sm:max-w-sm md:max-w-sm bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8">
         
         {/* Profile Image - Responsive sizing */}
         <div className="flex justify-center mb-4 sm:mb-6 md:mb-8">
@@ -29,7 +29,7 @@ const UserProfile = ({ user = {} }) => {
         </div>
 
         {/* Name - Responsive typography */}
-        <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800 text-center mb-2">
+        <h1 className="text-lg sm:text-xl md:text-xl font-bold text-gray-800 text-center mb-2">
           {name}
         </h1>
 
