@@ -20,7 +20,7 @@ const AddRecipeForm = () => {
     const { name, value } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: e.target.value
     }))
     // Clear error for this field when user starts typing
     if (errors[name]) {
