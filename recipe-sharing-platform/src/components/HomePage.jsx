@@ -28,12 +28,12 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 py-8 px-4 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="max-w-6xl mx-auto mb-12">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3">
+      {/* Header with hover shadow effect */}
+      <div className="max-w-6xl mx-auto mb-12 p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 hover:text-orange-600 transition-colors duration-300">
           Recipe Sharing Platform
         </h1>
-        <p className="text-gray-600 text-sm sm:text-base md:text-lg">
+        <p className="text-gray-600 text-sm sm:text-base md:text-lg hover:text-gray-700 transition-colors duration-300">
           Discover delicious recipes from around the world. Share your culinary creations with our community.
         </p>
       </div>
@@ -41,16 +41,16 @@ const HomePage = () => {
       {/* Loading State */}
       {loading && (
         <div className="flex justify-center items-center min-h-[400px]">
-          <div className="text-center">
+          <div className="text-center bg-white p-8 rounded-lg shadow-lg">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading recipes...</p>
           </div>
         </div>
       )}
 
-      {/* Error State */}
+      {/* Error State with shadow */}
       {error && (
-        <div className="max-w-6xl mx-auto bg-red-50 border border-red-200 rounded-lg p-4 mb-8">
+        <div className="max-w-6xl mx-auto bg-red-50 border border-red-200 rounded-lg p-4 mb-8 shadow-md hover:shadow-lg transition-shadow duration-300">
           <p className="text-red-700 font-semibold">Error: {error}</p>
         </div>
       )}
@@ -69,7 +69,9 @@ const HomePage = () => {
       {/* Empty State */}
       {!loading && recipes.length === 0 && !error && (
         <div className="flex justify-center items-center min-h-[400px]">
-          <p className="text-gray-600 text-lg">No recipes found.</p>
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <p className="text-gray-600 text-lg">No recipes found.</p>
+          </div>
         </div>
       )}
     </div>
