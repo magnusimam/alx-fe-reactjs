@@ -31,12 +31,22 @@ const HomePage = () => {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-yellow-50 py-8 px-4 sm:px-6 lg:px-8">
       {/* Header with hover shadow effect */}
       <div className="max-w-6xl mx-auto mb-12 p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 hover:text-orange-600 transition-colors duration-300">
-          Recipe Sharing Platform
-        </h1>
-        <p className="text-gray-600 text-sm sm:text-base md:text-lg hover:text-gray-700 transition-colors duration-300">
-          Discover delicious recipes from around the world. Share your culinary creations with our community.
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex-1">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 hover:text-orange-600 transition-colors duration-300">
+              Recipe Sharing Platform
+            </h1>
+            <p className="text-gray-600 text-sm sm:text-base md:text-lg hover:text-gray-700 transition-colors duration-300">
+              Discover delicious recipes from around the world. Share your culinary creations with our community.
+            </p>
+          </div>
+          <Link
+            to="/add-recipe"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105 shadow-md hover:shadow-lg whitespace-nowrap"
+          >
+            + Add Recipe
+          </Link>
+        </div>
       </div>
 
       {/* Loading State */}
@@ -72,8 +82,14 @@ const HomePage = () => {
       {/* Empty State */}
       {!loading && recipes.length === 0 && !error && (
         <div className="flex justify-center items-center min-h-[400px]">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <p className="text-gray-600 text-lg">No recipes found.</p>
+          <div className="bg-white p-8 rounded-lg shadow-lg text-center">
+            <p className="text-gray-600 text-lg mb-4">No recipes found.</p>
+            <Link
+              to="/add-recipe"
+              className="inline-block px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg transition-all duration-300 hover:scale-105"
+            >
+              Be the first to add a recipe
+            </Link>
           </div>
         </div>
       )}
