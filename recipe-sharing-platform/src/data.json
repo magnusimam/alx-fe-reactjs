@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Spaghetti Carbonara",
+    "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
+    "image": "https://via.placeholder.com/400x300?text=Spaghetti+Carbonara"
+  },
+  {
+    "id": 2,
+    "title": "Chicken Tikka Masala",
+    "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato based gravy.",
+    "image": "https://via.placeholder.com/400x300?text=Chicken+Tikka+Masala"
+  },
+  {
+    "id": 3,
+    "title": "Margherita Pizza",
+    "summary": "Traditional Italian pizza with fresh mozzarella, basil, and tomato sauce on a thin crust.",
+    "image": "https://via.placeholder.com/400x300?text=Margherita+Pizza"
+  },
+  {
+    "id": 4,
+    "title": "Pad Thai",
+    "summary": "Stir-fried rice noodles with shrimp, tofu, eggs, and peanuts in a tangy tamarind sauce.",
+    "image": "https://via.placeholder.com/400x300?text=Pad+Thai"
+  },
+  {
+    "id": 5,
+    "title": "Beef Tacos",
+    "summary": "Seasoned ground beef in warm tortillas with lettuce, cheese, salsa, and sour cream.",
+    "image": "https://via.placeholder.com/400x300?text=Beef+Tacos"
+  },
+  {
+    "id": 6,
+    "title": "Chocolate Cake",
+    "summary": "Rich and moist chocolate cake with creamy chocolate frosting and a smooth ganache topping.",
+    "image": "https://via.placeholder.com/400x300?text=Chocolate+Cake"
+  }
+]
