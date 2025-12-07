@@ -3,36 +3,178 @@
     "id": 1,
     "title": "Spaghetti Carbonara",
     "summary": "A classic Italian pasta dish with eggs, cheese, bacon, and black pepper.",
-    "image": "https://via.placeholder.com/400x300?text=Spaghetti+Carbonara"
+    "image": "https://via.placeholder.com/400x300?text=Spaghetti+Carbonara",
+    "servings": 4,
+    "cookTime": "20 minutes",
+    "difficulty": "Easy",
+    "ingredients": [
+      "400g spaghetti",
+      "200g bacon or pancetta, diced",
+      "4 large eggs",
+      "100g Parmesan cheese, grated",
+      "2 cloves garlic, minced",
+      "Salt and black pepper to taste",
+      "Fresh parsley for garnish"
+    ],
+    "instructions": [
+      "Bring a large pot of salted water to boil and cook spaghetti according to package directions.",
+      "While pasta cooks, fry bacon in a large skillet over medium heat until crispy.",
+      "In a bowl, beat eggs and mix in grated Parmesan cheese, salt, and pepper.",
+      "Drain pasta and reserve 1 cup of pasta water.",
+      "Add hot pasta to the skillet with bacon and remove from heat.",
+      "Pour egg mixture over pasta and toss quickly, adding pasta water as needed for creaminess.",
+      "Serve immediately with extra Parmesan and fresh parsley."
+    ]
   },
   {
     "id": 2,
     "title": "Chicken Tikka Masala",
     "summary": "Chunks of grilled chicken (tikka) cooked in a smooth buttery & creamy tomato based gravy.",
-    "image": "https://via.placeholder.com/400x300?text=Chicken+Tikka+Masala"
+    "image": "https://via.placeholder.com/400x300?text=Chicken+Tikka+Masala",
+    "servings": 6,
+    "cookTime": "45 minutes",
+    "difficulty": "Medium",
+    "ingredients": [
+      "800g chicken breast, cubed",
+      "1 cup yogurt",
+      "3 tbsp tikka masala paste",
+      "400ml coconut milk",
+      "400ml canned tomatoes",
+      "2 onions, diced",
+      "3 cloves garlic, minced",
+      "2 tbsp ginger, minced",
+      "Fresh cilantro",
+      "Basmati rice for serving"
+    ],
+    "instructions": [
+      "Marinate chicken in yogurt and tikka paste for at least 30 minutes.",
+      "Heat oil in a large pan and cook marinated chicken until golden. Set aside.",
+      "In the same pan, sauté onions, garlic, and ginger until fragrant.",
+      "Add canned tomatoes and simmer for 10 minutes.",
+      "Stir in coconut milk and tikka paste, then add cooked chicken.",
+      "Simmer for 20-25 minutes until sauce thickens.",
+      "Garnish with fresh cilantro and serve over basmati rice."
+    ]
   },
   {
     "id": 3,
     "title": "Margherita Pizza",
     "summary": "Traditional Italian pizza with fresh mozzarella, basil, and tomato sauce on a thin crust.",
-    "image": "https://via.placeholder.com/400x300?text=Margherita+Pizza"
+    "image": "https://via.placeholder.com/400x300?text=Margherita+Pizza",
+    "servings": 2,
+    "cookTime": "30 minutes",
+    "difficulty": "Medium",
+    "ingredients": [
+      "Pizza dough",
+      "200ml tomato sauce",
+      "250g fresh mozzarella",
+      "Fresh basil leaves",
+      "Olive oil",
+      "Salt to taste",
+      "Black pepper"
+    ],
+    "instructions": [
+      "Preheat oven to 220C (425F).",
+      "Roll out pizza dough on a floured surface.",
+      "Spread tomato sauce evenly over the dough.",
+      "Tear mozzarella into pieces and distribute over sauce.",
+      "Drizzle with olive oil and season with salt and pepper.",
+      "Bake for 12-15 minutes until crust is golden and cheese is bubbly.",
+      "Top with fresh basil leaves and serve hot."
+    ]
   },
   {
     "id": 4,
     "title": "Pad Thai",
     "summary": "Stir-fried rice noodles with shrimp, tofu, eggs, and peanuts in a tangy tamarind sauce.",
-    "image": "https://via.placeholder.com/400x300?text=Pad+Thai"
+    "image": "https://via.placeholder.com/400x300?text=Pad+Thai",
+    "servings": 4,
+    "cookTime": "25 minutes",
+    "difficulty": "Medium",
+    "ingredients": [
+      "300g rice noodles",
+      "300g shrimp, peeled",
+      "200g tofu, cubed",
+      "3 eggs, beaten",
+      "3 tbsp tamarind paste",
+      "2 tbsp fish sauce",
+      "2 tbsp palm sugar",
+      "2 cups bean sprouts",
+      "4 green onions, chopped",
+      "Crushed peanuts",
+      "Lime wedges"
+    ],
+    "instructions": [
+      "Soak rice noodles in warm water for 15 minutes, then drain.",
+      "Heat oil in a wok or large skillet over high heat.",
+      "Stir-fry shrimp and tofu until cooked, about 3-4 minutes.",
+      "Push ingredients to the side and scramble eggs in the pan.",
+      "Add noodles and toss everything together.",
+      "Mix tamarind paste, fish sauce, and palm sugar, then pour over noodles.",
+      "Toss in bean sprouts and green onions.",
+      "Serve topped with crushed peanuts and lime wedges."
+    ]
   },
   {
     "id": 5,
     "title": "Beef Tacos",
     "summary": "Seasoned ground beef in warm tortillas with lettuce, cheese, salsa, and sour cream.",
-    "image": "https://via.placeholder.com/400x300?text=Beef+Tacos"
+    "image": "https://via.placeholder.com/400x300?text=Beef+Tacos",
+    "servings": 4,
+    "cookTime": "15 minutes",
+    "difficulty": "Easy",
+    "ingredients": [
+      "500g ground beef",
+      "8 taco shells or tortillas",
+      "1 onion, diced",
+      "2 tbsp taco seasoning",
+      "Shredded lettuce",
+      "Shredded cheddar cheese",
+      "Salsa",
+      "Sour cream",
+      "Fresh cilantro"
+    ],
+    "instructions": [
+      "Heat oil in a skillet over medium-high heat.",
+      "Add diced onion and sauté until softened, about 2 minutes.",
+      "Add ground beef and cook until browned, breaking it up as it cooks.",
+      "Drain excess fat if needed.",
+      "Stir in taco seasoning and a splash of water, simmer for 3-4 minutes.",
+      "Warm taco shells according to package directions.",
+      "Assemble tacos with meat, lettuce, cheese, salsa, and sour cream.",
+      "Garnish with fresh cilantro and serve."
+    ]
   },
   {
     "id": 6,
     "title": "Chocolate Cake",
     "summary": "Rich and moist chocolate cake with creamy chocolate frosting and a smooth ganache topping.",
-    "image": "https://via.placeholder.com/400x300?text=Chocolate+Cake"
+    "image": "https://via.placeholder.com/400x300?text=Chocolate+Cake",
+    "servings": 8,
+    "cookTime": "50 minutes",
+    "difficulty": "Medium",
+    "ingredients": [
+      "200g all-purpose flour",
+      "200g sugar",
+      "75g cocoa powder",
+      "2 tsp baking soda",
+      "1 tsp baking powder",
+      "1 tsp salt",
+      "2 eggs",
+      "200ml buttermilk",
+      "200ml strong coffee",
+      "100ml vegetable oil",
+      "1 tsp vanilla extract"
+    ],
+    "instructions": [
+      "Preheat oven to 175C (350F) and grease two round cake pans.",
+      "Mix flour, sugar, cocoa powder, baking soda, baking powder, and salt in a large bowl.",
+      "Add eggs, buttermilk, coffee, oil, and vanilla extract.",
+      "Beat until smooth.",
+      "Pour batter evenly into prepared pans.",
+      "Bake for 30-35 minutes until a toothpick comes out clean.",
+      "Cool in pans for 10 minutes, then turn out onto wire racks.",
+      "Once cooled, frost with chocolate frosting and serve."
+    ]
   }
 ]
