@@ -2,12 +2,10 @@ import { useState } from 'react';
 import './RegistrationForm.css';
 
 export default function RegistrationForm() {
-  // State for form fields
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
+  // State for form fields - INDIVIDUAL CONTROLLED COMPONENTS
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   // State for errors
   const [errors, setErrors] = useState({});
@@ -16,10 +14,15 @@ export default function RegistrationForm() {
   // Handle input changes (controlled components)
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    
+    if (name === 'username') {
+      setUsername(value);
+    } else if (name === 'email') {
+      setEmail(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    }
+    
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -33,17 +36,17 @@ export default function RegistrationForm() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.username.trim()) {
+    if (!username.trim()) {
       newErrors.username = 'Username is required';
     }
-    if (!formData.email.trim()) {
+    if (!email.trim()) {
       newErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       newErrors.email = 'Email is invalid';
     }
-    if (!formData.password.trim()) {
+    if (!password.trim()) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 6) {
+    } else if (password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
 
@@ -59,13 +62,16 @@ export default function RegistrationForm() {
     if (Object.keys(newErrors).length === 0) {
       try {
         // Mock API call
-        console.log('Submitting form data:', formData);
+        const formDataToSubmit = { username, email, password };
+        console.log('Submitting form data:', formDataToSubmit);
         
         // Simulate API delay
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         setSubmitted(true);
-        setFormData({ username: '', email: '', password: '' });
+        setUsername('');
+        setEmail('');
+        setPassword('');
         
         // Reset success message after 3 seconds
         setTimeout(() => setSubmitted(false), 3000);
@@ -94,7 +100,7 @@ export default function RegistrationForm() {
             type="text"
             id="username"
             name="username"
-            value={formData.username}
+            value={username}
             onChange={handleChange}
             placeholder="Enter your username"
           />
@@ -107,7 +113,7 @@ export default function RegistrationForm() {
             type="email"
             id="email"
             name="email"
-            value={formData.email}
+            value={email}
             onChange={handleChange}
             placeholder="Enter your email"
           />
@@ -120,7 +126,7 @@ export default function RegistrationForm() {
             type="password"
             id="password"
             name="password"
-            value={formData.password}
+            value={password}
             onChange={handleChange}
             placeholder="Enter your password"
           />
