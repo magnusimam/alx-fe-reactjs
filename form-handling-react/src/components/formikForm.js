@@ -3,17 +3,11 @@ import * as Yup from 'yup';
 import { useState } from 'react';
 import './formikForm.css';
 
-// Validation schema using Yup
+// Yup Validation Schema
 const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    .required('Username is required')
-    .min(3, 'Username must be at least 3 characters'),
-  email: Yup.string()
-    .email('Email must be valid')
-    .required('Email is required'),
-  password: Yup.string()
-    .required('Password is required')
-    .min(6, 'Password must be at least 6 characters')
+  username: Yup.string().required('Username is required').min(3, 'Username must be at least 3 characters'),
+  email: Yup.string().required('Email is required').email('Email must be valid'),
+  password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters')
 });
 
 export default function FormikForm() {
